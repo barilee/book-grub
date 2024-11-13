@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.env
+venv/
+
+# Electron/Node.js
+node_modules/
+*.log
+
+# SQLite
+*.db
+
+# General
+*.DS_Store
+.env
+_playground/
