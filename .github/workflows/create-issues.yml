@@ -11,12 +11,11 @@ permissions:
 jobs:
   create_issues:
     runs-on: ubuntu-latest
-    env:
-      BOOK_GRUB_TOKEN: ${{ secrets.BOOK_GRUB_GITHUB_TOKEN }}
-
     steps:
       - name: Set up GitHub Token
         run: echo "Setting up GitHub Token"
+        env:
+        GH_TOKEN: ${{ secrets.BOOK_GRUB_GITHUB_TOKEN }}
 
       - name: Create Issues for GitHub Project
         run: |
@@ -38,6 +37,6 @@ jobs:
 
           for task in "${tasks[@]}"; do
             IFS="::" read -r title description labels milestone <<< "$task"
-            gh issue create --title "$title" --body "$description" --label "$labels" --milestone "$milestone"
-            echo "Created issue: $title"
+            issue_number=$(GH_TOKEN=${{ secrets.BOOK_GRUB_GITHUB_TOKEN }} gh issue create --title "$title" --body "$description" --label "$labels" --milestone "$milestone" --json number -q ".number")
+            echo "Created issue #$issue_number: $title"
           done
