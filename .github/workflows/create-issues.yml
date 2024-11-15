@@ -3,6 +3,11 @@ name: Create Issues and Add to GitHub Project
 on:
   workflow_dispatch:
 
+permissions:
+  issues: write
+  contents: read
+  pull-requests: write
+
 jobs:
   create_issues:
     runs-on: ubuntu-latest
