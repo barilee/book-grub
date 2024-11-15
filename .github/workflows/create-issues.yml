@@ -13,8 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up GitHub Token
+        run: echo "Setting up GitHub Token"
         env:
-          GITHUB_TOKEN: ${{ secrets.BOOK_GRUB_GITHUB_TOKEN }}
+          BOOK_GRUB_TOKEN: ${{ secrets.BOOK_GRUB_GITHUB_TOKEN }}
 
       - name: Create Issues for GitHub Project
         run: |
