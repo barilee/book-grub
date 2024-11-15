@@ -1,0 +1,36 @@
+name: Create Issues and Add to GitHub Project
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create_issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up GitHub Token
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Issues for GitHub Project
+        run: |
+          declare -a tasks=(
+            "Task 1.1: Design UI for user guidance through content and specifying elements::Develop an intuitive UI for the user to highlight or specify navigation elements (e.g., \"next\", \"previous\", \"index\")::Frontend,UI::MVP Core Features"
+            "Task 1.2: Integrate Playwright to record user navigation actions::Implement Playwright scripts that record user actions on webnovel sites to learn navigation patterns (e.g., clicking \"next\", navigating chapters)::Backend,Playwright::MVP Core Features"
+            "Task 2.1: Implement DOM analysis and content structure identification::Use Playwright and BeautifulSoup to analyze the DOM and identify key content structures like index pages, chapters, prologues, and epilogues::Backend,Content Parsing::MVP Core Features"
+            "Task 2.2: Add support for handling chapter lists and detecting final pages::Implement support for jump-to-chapter lists and logic to identify the final page of a webnovel::Backend,Content Identification::MVP Core Features"
+            "Task 3.1: Develop batch fetching for chapters or books::Implement functionality to fetch multiple chapters or books in a batch process, allowing the user to scrape entire books or selected ranges::Backend,Scraping::MVP Core Features"
+            "Task 4.1: Implement feature toggles for free and premium users::Implement a system to differentiate feature access for free and premium users, including rate limiting for scraping activities for free users::Backend,Freemium,Access Control::Freemium Model Implementation"
+            "Task 5.1: Set up user authentication (sign-up, login, email verification)::Implement a user authentication system for Book Grub, including sign-up, login, and email verification, using Firebase Authentication or a custom backend::Backend,Authentication::Freemium Model Implementation"
+            "Task 5.2: Integrate payment gateway (Stripe)::Integrate Stripe or PayPal to handle premium subscription payments, enabling users to upgrade for full features::Backend,Payment Integration::Freemium Model Implementation"
+            "Task 6.1: Integrate ads for free users::Integrate non-intrusive ads for free-tier users using a service like Google AdMob::Frontend,Ads::Freemium Model Implementation"
+            "Task 6.2: Update UI for upgrade prompts and banners::Update the UI to include prompts and banners that highlight the benefits of upgrading to a premium account::Frontend,UI::Freemium Model Implementation"
+            "Task 7.1: Implement caching of downloaded chapters::Develop a caching mechanism for downloaded chapters to avoid redundant downloads and improve efficiency::Backend,Caching::MVP Core Features"
+            "Task 8.1: Automated testing for authentication, scraping logic::Set up automated tests for user authentication, feature access control, and scraping logic to ensure a stable release::Testing,Automation::Beta Launch and Feedback"
+            "Task 8.2: Launch beta version and collect feedback::Release a beta version of Book Grub to a small group of users to gather feedback on usability, bugs, and potential improvements::Beta Testing,Feedback::Beta Launch and Feedback"
+          )
+
+          for task in "${tasks[@]}"; do
+            IFS="::" read -r title description labels milestone <<< "$task"
+            issue_number=$(gh issue create --title "$title" --body "$description" --label "$labels" --milestone "$milestone" --json number -q ".number")
+            echo "Created issue #$issue_number: $title"
+          done
