@@ -15,9 +15,11 @@ jobs:
       - name: Set up GitHub Token
         run: echo "Setting up GitHub Token"
         env:
-        GH_TOKEN: ${{ secrets.BOOK_GRUB_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.BOOK_GRUB_GITHUB_TOKEN }}
 
       - name: Create Issues for GitHub Project
+        env:
+          GH_TOKEN: ${{ secrets.BOOK_GRUB_GITHUB_TOKEN }}
         run: |
           declare -a tasks=(
             "Task 1.1: Design UI for user guidance through content and specifying elements::Develop an intuitive UI for the user to highlight or specify navigation elements (e.g., \"next\", \"previous\", \"index\")::Frontend,UI::MVP Core Features"
@@ -37,6 +39,6 @@ jobs:
 
           for task in "${tasks[@]}"; do
             IFS="::" read -r title description labels milestone <<< "$task"
-            issue_number=$(GH_TOKEN=${{ secrets.BOOK_GRUB_GITHUB_TOKEN }} gh issue create --title "$title" --body "$description" --label "$labels" --milestone "$milestone" --json number -q ".number")
+            issue_number=$(gh issue create --title "$title" --body "$description" --label "$labels" --milestone "$milestone" --json number -q ".number")
             echo "Created issue #$issue_number: $title"
           done
