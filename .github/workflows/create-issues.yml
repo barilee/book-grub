@@ -36,8 +36,8 @@ jobs:
             "Task 8.2: Launch beta version and collect feedback::Release a beta version of Book Grub to a small group of users to gather feedback on usability, bugs, and potential improvements::Beta Testing,Feedback::Beta Launch and Feedback"
           )
 
-    for task in "${tasks[@]}"; do
-      IFS="::" read -r title description labels milestone <<< "$task"
-      gh issue create --title "$title" --body "$description" --label "$labels" --milestone "$milestone"
-      echo "Created issue: $title"
-    done
+          for task in "${tasks[@]}"; do
+            IFS="::" read -r title description labels milestone <<< "$task"
+            gh issue create --title "$title" --body "$description" --label "$labels" --milestone "$milestone"
+            echo "Created issue: $title"
+          done
